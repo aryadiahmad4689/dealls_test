@@ -1,0 +1,52 @@
+@startuml
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) #--x
+hide methods
+hide stereotypes
+
+Table(users, "Table users") {
+    + primary_key(id) : INTEGER
+    + name : TEXT
+    + email : TEXT
+    + age : INTEGER
+    + gender : VARCHAR(10)
+    + password : TEXT
+    + is_verified : INTEGER
+    + created_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+Table(swipes, "Table swipes") {
+    + primary_key(id) : INTEGER
+    + swipe_user_id : INTEGER
+    + is_swipe_user_id : INTEGER
+    + swipe_type : TEXT
+    + created_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+Table(packages, "Table packages") {
+    + primary_key(id) : INTEGER
+    + subscription_type : TEXT
+    + subscription_long : INTEGER
+    + price : REAL
+    + created_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+Table(subscriptions, "Table subscriptions") {
+    + primary_key(id) : INTEGER
+    + user_id : INTEGER
+    + packages_id : INTEGER
+    + StartDate : DATE
+    + EndDate : DATE
+    + created_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+users --|> swipes : swipe_user_id
+users --|> swipes : is_swipe_user_id
+users --|> subscriptions : user_id
+packages --|> subscriptions : packages_id
+@enduml

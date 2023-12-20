@@ -1,0 +1,44 @@
+@startuml
+actor Client
+participant "UseCase" as UC
+database "User Repository" as Repo
+entity "entity.User" as User
+participant "JWT System" as JWT
+
+Client -> UC : SignIn(ctx, req)
+activate UC
+
+UC -> Repo : GetUserByEmail(ctx, req.Email)
+activate Repo
+Repo --> UC : user / error
+deactivate Repo
+
+alt if user not found
+    UC --> Client : "email not found" error
+    deactivate UC
+else if password verification fails
+    UC -> User : CompareHashAndPassword(user.Password, req.Password)
+    activate User
+    User --> UC : "invalid password" error
+    deactivate User
+    UC --> Client : "invalid password" error
+    deactivate UC
+else successful sign in
+    UC -> JWT : NewWithClaims(...)
+    activate JWT
+    JWT --> UC : token
+    deactivate JWT
+    UC -> JWT : SignedString([...])
+    activate JWT
+    JWT --> UC : tokenString / error
+    deactivate JWT
+    alt if token creation fails
+        UC --> Client : "token failed created" error
+        deactivate UC
+    else successful token creation
+        UC --> Client : tokenString
+        deactivate UC
+    end
+end
+
+@enduml

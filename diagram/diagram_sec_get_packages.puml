@@ -1,0 +1,31 @@
+@startuml
+participant "Client" as client
+participant "UseCase" as usecase
+participant "Repository" as repository
+participant "Entity" as entity
+
+client -> usecase: GetPackage(ctx)
+activate usecase
+
+usecase -> repository: GetPackage(ctx)
+activate repository
+
+alt success
+    repository -> entity: Fetch Packages Data
+    activate entity
+    entity --> repository: packages[]
+    deactivate entity
+
+    repository --> usecase: packages[]
+else failure
+    repository --> usecase: error
+end
+deactivate repository
+
+alt success
+    usecase --> client: packages[]
+else failure
+    usecase --> client: error
+end
+deactivate usecase
+@enduml

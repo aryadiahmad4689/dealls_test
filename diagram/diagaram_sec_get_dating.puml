@@ -1,0 +1,84 @@
+@startuml
+actor Client
+participant "Context" as ctx
+participant "UseCase" as usecase
+participant "SwipeRepository" as swipeRepo
+participant "UserRepository" as userRepo
+database "Database" as db
+
+Client -> usecase: GetDatings(ctx)
+activate usecase
+
+usecase -> usecase: now := time.Now()
+usecase -> ctx: GetValue("user_id")
+return strValue
+
+usecase -> swipeRepo: GetCountSwipe(ctx, GetSwipeReq{UserId, Date})
+activate swipeRepo
+swipeRepo -> db: Query Swipe Count
+return count
+deactivate swipeRepo
+
+alt if count >= 10 and not verified
+    usecase -> userRepo: GetUserById(ctx, UserId)
+    activate userRepo
+    userRepo -> db: Query User Data
+    return data
+    deactivate userRepo
+
+    usecase -> usecase: Return Error "swipe today is done"
+else if count < 10 or verified
+    usecase -> swipeRepo: GetSwipeAbleUser(ctx, GetSwipeReq{UserId, Date})
+    activate swipeRepo
+    swipeRepo -> db: Query Swipeable Users
+    return user
+    deactivate swipeRepo
+
+    usecase --> Client: Return user
+end
+
+Memperbaiki sequence diagram PlantUML untuk fungsi GetDatings, saya akan menyesuaikan bagian akhir diagram untuk memastikan bahwa penutupan aktivasi usecase dan pengembalian user ke Client dilakukan dengan benar. Berikut adalah versi yang diperbaiki:
+
+plantuml
+Copy code
+@startuml
+actor Client
+participant "Context" as ctx
+participant "UseCase" as usecase
+participant "SwipeRepository" as swipeRepo
+participant "UserRepository" as userRepo
+database "Database" as db
+
+Client -> usecase: GetDatings(ctx)
+activate usecase
+
+usecase -> usecase: now := time.Now()
+usecase -> ctx: GetValue("user_id")
+return strValue
+
+usecase -> swipeRepo: GetCountSwipe(ctx, GetSwipeReq{UserId, Date})
+activate swipeRepo
+swipeRepo -> db: Query Swipe Count
+return count
+deactivate swipeRepo
+
+alt if count >= 10 and not verified
+    usecase -> userRepo: GetUserById(ctx, UserId)
+    activate userRepo
+    userRepo -> db: Query User Data
+    return data
+    deactivate userRepo
+
+    usecase --> Client: Return Error "swipe today is done"
+else if count < 10 or verified
+    usecase -> swipeRepo: GetSwipeAbleUser(ctx, GetSwipeReq{UserId, Date})
+    activate swipeRepo
+    swipeRepo -> db: Query Swipeable Users
+    return user
+    deactivate swipeRepo
+
+    usecase --> Client: Return user
+end
+
+deactivate usecase
+@enduml

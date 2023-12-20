@@ -1,0 +1,49 @@
+@startuml
+actor Client
+participant "UseCase" as UC
+database "User Repository" as Repo
+participant "bcrypt" as Bcrypt
+participant "JWT Library" as JWT
+
+Client -> UC : SignUp(ctx, user)
+activate UC
+
+UC -> Bcrypt : GenerateFromPassword(user.Password, bcrypt.DefaultCost)
+activate Bcrypt
+Bcrypt -> Bcrypt : Hash Password
+Bcrypt --> UC : hashedPassword, err
+deactivate Bcrypt
+
+alt if err != nil
+    UC --> Client : "", err
+    deactivate UC
+else
+    UC -> Repo : StoreUser(ctx, user)
+    activate Repo
+    Repo -> Repo : Store User
+    Repo --> UC : newUser, err
+    deactivate Repo
+
+    alt if err != nil
+        UC --> Client : "", err
+        deactivate UC
+    else
+        UC -> JWT : NewWithClaims(jwt.SigningMethodHS256, claims)
+        activate JWT
+        JWT --> UC : token
+
+        UC -> JWT : SignedString([]byte(os.Getenv("AUTH_KEY")))
+        JWT -> JWT : Sign Token
+        JWT --> UC : tokenString, err
+
+        alt if err != nil
+            UC --> Client : "", err
+            deactivate UC
+        else
+            UC --> Client : tokenString, nil
+            deactivate UC
+        end
+    end
+end
+
+@enduml

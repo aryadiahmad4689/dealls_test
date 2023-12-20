@@ -1,0 +1,35 @@
+@startuml
+actor User
+participant "UseCase: UseCase" as UseCase
+participant "Repo: SwipeRepository" as Repo
+participant "Swipe: entity.Swipe" as SwipeEntity
+
+User -> UseCase: SwipeLeft(req: Swipe)
+activate UseCase
+
+UseCase -> Repo: GetUserSwipe(req: Swipe)
+activate Repo
+
+alt swipe not exists
+    Repo --> UseCase: nil
+    deactivate Repo
+
+    UseCase -> SwipeEntity: Set createdAt = Now()
+    activate SwipeEntity
+    SwipeEntity --> UseCase
+    deactivate SwipeEntity
+
+    UseCase -> Repo: StoreSwipe(req: Swipe)
+    Repo --> UseCase: nil (success)
+else swipe exists
+    Repo --> UseCase: error ("already swipped")
+end
+deactivate Repo
+
+alt store swipe successful
+    UseCase --> User: nil (success)
+else store swipe failed
+    UseCase --> User: error
+end
+deactivate UseCase
+@enduml

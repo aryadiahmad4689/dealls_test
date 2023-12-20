@@ -1,0 +1,50 @@
+@startuml
+actor Client
+participant "usecase\nUseCase" as UseCase
+participant "repo\nPackage" as PackageRepo
+participant "repo\nSubscription" as SubscriptionRepo
+participant "repo\nUser" as UserRepo
+database "Database" as DB
+
+Client -> UseCase : Payment(ctx, req)
+activate UseCase
+
+UseCase -> PackageRepo : GetPackageById(ctx, req.PackageId)
+activate PackageRepo
+PackageRepo -> DB : Query Package by Id
+activate DB
+DB --> PackageRepo : Package Data
+deactivate DB
+PackageRepo --> UseCase : pkg
+deactivate PackageRepo
+
+alt pkg.Price <= req.Pricing
+    UseCase -> SubscriptionRepo : StoreSubcription(ctx, req)
+    activate SubscriptionRepo
+    SubscriptionRepo -> DB : Store Subscription Data
+    activate DB
+    DB --> SubscriptionRepo : Success
+    deactivate DB
+    SubscriptionRepo --> UseCase : Success
+    deactivate SubscriptionRepo
+    
+    UseCase -> UserRepo : UpdateUser(ctx, {req.UserId, 1})
+    activate UserRepo
+    UserRepo -> DB : Update User Verification
+    activate DB
+    DB --> UserRepo : Success
+    deactivate DB
+    UserRepo --> UseCase : Success
+    deactivate UserRepo
+else
+    UseCase --> Client : Error "your money not enough"
+end
+
+alt Successful Payment and Update
+    UseCase --> Client : Success
+else
+    UseCase --> Client : Error
+end
+
+deactivate UseCase
+@enduml
