@@ -12,7 +12,7 @@ This repository contains the backend implementation for a Dating Mobile App, sim
 - **Premium Packages**: Users can purchase premium packages to unlock features such as unlimited swipes and a verified user label.
 
 ## Tech Stack
-- **Language**: [golang] i choose becauser is xfaster, mature and big community.
+- **Language**: [golang] i choose becauser is faster, mature and big community.
 - **Database**: [sqlite3] - i choose because is easy to using for tecnical test like this, but for production i think is not good choice, i recomended to use [postgres] for database relational.
 - **Managemen** : [makefile] i choose because is easily to run and migrate,this also complies with https://12factor.net/admin-processes
 - **Envirotment**: [.env] i choose is easily manage envirotmenr,this also complies with https://12factor.net/config
@@ -24,10 +24,22 @@ This repository contains the backend implementation for a Dating Mobile App, sim
 ### Prerequisites
 - Golang 1.18 up
 - VsCode
+- PlantUML vscode extension
+- Postman
+
+### Detail And Structure
+- `cmd`: Main of service
+- `src`: Content and logic of the application
+  - `app`: Main configuration settings of the application
+    - `db`: To create configuration and connection to the database
+  - `middleware`: To create middleware and manage people who log in to the application
+  - `modules`: Business logic and core application
 
 ### Installation
 1. Clone the repository:
    ```bash
+   git clone https://github.com/aryadiahmad4689/dealls_test.git 
+   or 
    git clone github.com/aryadiahmad4689/dealls_test.git
 2. Enter the main folder 
 
@@ -65,3 +77,13 @@ To see diagram you must to put code to plantuml online or install extension vsco
     - payment :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_payment.puml
     - swipe_left :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_swipe_left.puml
     - swipe_right :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_swipe_right.puml
+
+### Advice
+I understand that my system definitely has a lot of gaps and there are still many things I haven't done, therefore I want to suggest several things in the application that can be added
+ - for databases you should use `postgres`
+ - create validation
+ - complete unit test
+ - add log in application
+
+
+## Thanks
