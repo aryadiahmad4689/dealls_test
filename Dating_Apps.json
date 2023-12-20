@@ -1,0 +1,430 @@
+{
+	"info": {
+		"_postman_id": "68e53760-518a-4f53-a709-74d770102fa2",
+		"name": "Testing Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19024890"
+	},
+	"item": [
+		{
+			"name": "Dating App",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Sign-Up",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Token is returned and saved\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.have.property('token');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"dias2\",\r\n    \"email\": \"dias2@example.com\",\r\n    \"password\": \"mySecurePassword\",\r\n    \"age\": \"20\",\r\n    \"gender\": \"male\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/v1/users/sign-up",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"users",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sign-In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Token is returned\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData.data).to.have.property('token');\r",
+											"    var token = responseData.data.token;\r",
+											"    pm.environment.set(\"AUTH_USER\", token);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"dias2@example.com\",\r\n    \"password\": \"mySecurePassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/v1/users/sign-in",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"users",
+										"sign-in"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Swipe",
+					"item": [
+						{
+							"name": "Get Dating",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the expected structure\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status');\r",
+											"    pm.expect(responseData.status).to.eql(200);\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.have.property('users').that.is.an('array');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"All users have required properties\", function () {\r",
+											"    var users = pm.response.json().data.users;\r",
+											"    users.forEach(function (user) {\r",
+											"        pm.expect(user).to.have.property('id');\r",
+											"        pm.expect(user).to.have.property('name');\r",
+											"        pm.expect(user).to.have.property('gender');\r",
+											"        pm.expect(user).to.have.property('age');\r",
+											"        pm.expect(user).to.have.property('is_verified');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_USER}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/v1/swipes/get-dating",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"swipes",
+										"get-dating"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Swipe Right",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains the expected message and status\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 200);\r",
+											"    pm.expect(responseData).to.have.property('message', 'Success');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Data object is empty\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.be.empty;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_USER}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/v1/swipes/right/24",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"swipes",
+										"right",
+										"24"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Swipe Left",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains the expected message and status\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 200);\r",
+											"    pm.expect(responseData).to.have.property('message', 'Success');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Data object is empty\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.be.empty;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_USER}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/v1/swipes/left/9",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"swipes",
+										"left",
+										"9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Package",
+					"item": [
+						{
+							"name": "Get Package",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains the expected message\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData.message).to.eql(\"Success\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Data object contains packages\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData.data).to.have.property('packages').that.is.an('array');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Each package has required properties\", function () {\r",
+											"    var packages = pm.response.json().data.packages;\r",
+											"    packages.forEach(function (pkg) {\r",
+											"        pm.expect(pkg).to.have.property('id');\r",
+											"        pm.expect(pkg).to.have.property('subscription_type');\r",
+											"        pm.expect(pkg).to.have.property('subscription_long');\r",
+											"        pm.expect(pkg).to.have.property('price');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/v1/packages/",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"packages",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Subscription",
+					"item": [
+						{
+							"name": "Payment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains the expected message and status\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 200);\r",
+											"    pm.expect(responseData).to.have.property('message', 'Success');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Data object is empty\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.be.empty;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_USER}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"package_id\":\"1\",\r\n    \"ammount\":\"20000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/v1/subscriptions/payment",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"v1",
+										"subscriptions",
+										"payment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

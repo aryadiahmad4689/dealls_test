@@ -12,8 +12,8 @@ This repository contains the backend implementation for a Dating Mobile App, sim
 - **Premium Packages**: Users can purchase premium packages to unlock features such as unlimited swipes and a verified user label.
 
 ## Tech Stack
-- **Language**: [golang].
-- **Database**: [sqlite3] -  because is easy to using for tecnical test like this, but for production i think is not good choice, i recomended to use [postgres] for database relational.
+- **Language**: [golang] i choose becauser is xfaster, mature and big community.
+- **Database**: [sqlite3] - i choose because is easy to using for tecnical test like this, but for production i think is not good choice, i recomended to use [postgres] for database relational.
 - **Managemen** : [makefile] i choose because is easily to run and migrate,this also complies with https://12factor.net/admin-processes
 - **Envirotment**: [.env] i choose is easily manage envirotmenr,this also complies with https://12factor.net/config
 - **Sofware Architecture** : [layered architecture] I chose it because it is easy to develop and is modular and meets the principles of clean architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
@@ -43,6 +43,11 @@ This repository contains the backend implementation for a Dating Mobile App, sim
 
 8. Congrats app is up
 
+### Postman
+You can import file json `Dating_Apps.json` to postman.
+- i only handle positif test
+- before you test in postman you must to create envirotmen and add variable `AUTH_USER`
+
 
 ### Testing
 For unit test i just handle two layer (repository and usecase). I decided not to handle endpoint and handler because of time constraints. Please understand
@@ -51,12 +56,12 @@ For unit test i just handle two layer (repository and usecase). I decided not to
 
 ### Diagram
 To see diagram you must to put code to plantuml online or install extension vscode PlantUML
- - ERD : https://github.com/aryadiahmad4689/dealls_test/diagram/ERD.puml
+ - ERD : https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/ERD.puml
  - Diagram Sequence
-    - sign_in : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_sign_in.puml
-    - sign_up : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_sign_up.puml
-    - get_dating : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_get_dating.puml
-    - get_package : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_get_package.puml
-    - payment : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_payment.puml
-    - swipe_left : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_swipe_left.puml
-    - swipe_right : https://github.com/aryadiahmad4689/dealls_test/diagram/diagram_sec_swipe_right.puml
+    - sign_in :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_sign_in.puml
+    - sign_up :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_sign_up.puml
+    - get_dating : https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagaram_sec_get_dating.puml
+    - get_package :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_get_package.puml
+    - payment :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_payment.puml
+    - swipe_left :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_swipe_left.puml
+    - swipe_right :  https://github.com/aryadiahmad4689/dealls_test/blob/master/diagram/diagram_sec_swipe_right.puml
