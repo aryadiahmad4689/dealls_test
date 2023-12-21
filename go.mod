@@ -9,7 +9,7 @@ require (
 	github.com/jabardigitalservice/golog v0.0.8
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.19
-	github.com/spf13/viper v1.18.1
+	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/crypto v0.16.0
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0

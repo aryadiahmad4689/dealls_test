@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -57,10 +59,7 @@ func migrate(db *sql.DB) {
         FOREIGN KEY (packages_id) REFERENCES packages(id)
     );
 
-
-
 	`
-
 	_, err := db.Exec(query)
 	if err != nil {
 		log.Fatalf("Failed to migrate: %v", err)
@@ -68,8 +67,12 @@ func migrate(db *sql.DB) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 	// Ganti dengan jalur ke file database SQLite Anda
-	db, err := sql.Open("sqlite3", "db_dealls_dating.db")
+	db, err := sql.Open("sqlite3", os.Getenv("DB_PATH"))
 	if err != nil {
 		log.Fatal(err)
 	}
