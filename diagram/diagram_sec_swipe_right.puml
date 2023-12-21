@@ -4,7 +4,7 @@ participant "UseCase: UseCase" as UseCase
 participant "Repo: SwipeRepository" as Repo
 participant "Swipe: entity.Swipe" as SwipeEntity
 
-User -> UseCase: SwipeLeft(req: Swipe)
+User -> UseCase: SwipeRight(req: Swipe)
 activate UseCase
 
 UseCase -> Repo: GetUserSwipe(req: Swipe)
